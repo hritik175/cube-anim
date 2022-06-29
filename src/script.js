@@ -1,6 +1,9 @@
 import './style.css'
 import * as THREE from 'three';
-import gsap from 'gsap';
+// import gsap from 'gsap';
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+
 
 const scene = new THREE.Scene();
 
@@ -31,7 +34,7 @@ scene.add(group)
 // cube2.position.x = 3 
 // group.add(cube2)
 
-
+const canvas = document.querySelector('.webgl')
 
 // Creating a mesh with material    
 const geometry = new THREE.BoxGeometry(1,1,1)      // here BoxGeometry(height, width, depth)
@@ -63,13 +66,13 @@ scene.add(camera)
 camera.position.z = 2    
 // camera.position.x = 2 
 // camera.position.y = 1    // Changing the Camera position to make the object visible on the canvas.
-console.log(cube.position.distanceTo(camera.position))
+// console.log(cube.position.distanceTo(camera.position))
 
-
+const controls = new OrbitControls(camera, canvas)
+controls.enableDamping = true
 
 
 //Render
-const canvas = document.querySelector('.webgl')
 const renderer = new THREE.WebGLRenderer({
     canvas: canvas
 })
@@ -90,10 +93,16 @@ const clock = new THREE.Clock();
 
 const tick = () =>{
     const elapsedTime = clock.getElapsedTime()
-    // cube.rotation.y = cursor.y
-    camera.position.x = cursor.x * 5
-    camera.position.y = cursor.y * 5
-    camera.lookAt(cube.position)
+    
+    // my camera setup, Will be using threejs Built in Control.
+
+    // camera.position.x = Math.sin(cursor.x * Math.PI * 2 ) * 3
+    // camera.position.z = Math.cos(cursor.x * Math.PI * 2) * 3 
+    // camera.lookAt(cube.position)
+
+
+   controls.update()
+
     renderer.render(scene,camera)
 
     window.requestAnimationFrame(tick)
