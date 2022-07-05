@@ -6,15 +6,29 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
 
 
 const scene = new THREE.Scene();
-
-
-
-
 const canvas = document.querySelector('.webgl')
 
 // Creating a mesh with material    
-const geometry = new THREE.BoxGeometry(1,1,1)      // here BoxGeometry(height, width, depth)
-const material = new THREE.MeshBasicMaterial({color : 'red'})
+// const geometry = new THREE.BoxGeometry(1,1,1,2,2,2)      // here BoxGeometry(height, width, depth)
+
+
+const geometry = new THREE.BufferGeometry()
+
+const count = 10
+const positionsArray = new Float32Array(count * 3 * 3)
+for(let i = 0; i<count*3*3; i++){
+    positionsArray[i] = Math.random()
+    console.log(positionsArray[i])
+}
+
+const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
+console.log(positionsAttribute)
+geometry.setAttribute('position', positionsAttribute)
+
+const material = new THREE.MeshBasicMaterial({
+    color : 'red',
+    wireframe: true
+})
 const cube = new THREE.Mesh(geometry,material)
 
 //Positioning Cube
@@ -101,7 +115,7 @@ tick()
 
 
 
-// Gouping objects
+// GROUPING OBJECTS
 //const group = new THREE.Group()
 //scene.add(group)
 // const cube1 = new THREE.Mesh(
@@ -119,7 +133,7 @@ tick()
 
 
 
-//Cursor Control//
+//CURSOR CONTROL//
 // const cursor ={
 //     x:0,
 //     y:0
@@ -132,7 +146,16 @@ tick()
 
 
 
-//Animation using GSAP
-
+//ANIMATION USING GSAP
 // gsap.to(cube.position, {duration: 1, delay: 1, x: 2})
 // gsap.to(cube.position, {duration: 1, delay: 2, x: 0})
+
+
+//BUFFER GEOMETRY
+// const positionsArray = new Float32Array([
+//     0,0,0,
+//     0,1,0,
+//     1,0,0
+// ])
+
+// const vertexPosition = new THREE.BufferAttribute(positionsArray, 3)
