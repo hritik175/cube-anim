@@ -1,35 +1,45 @@
 import './style.css'
 import * as THREE from 'three';
 // import gsap from 'gsap';
+import * as dat from 'dat.gui';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls'
+
+
+
 
 
 
 const scene = new THREE.Scene();
 const canvas = document.querySelector('.webgl')
 
-// Creating a mesh with material    
-// const geometry = new THREE.BoxGeometry(1,1,1,2,2,2)      // here BoxGeometry(height, width, depth)
-
-
-const geometry = new THREE.BufferGeometry()
-
-const count = 10
-const positionsArray = new Float32Array(count * 3 * 3)
-for(let i = 0; i<count*3*3; i++){
-    positionsArray[i] = Math.random()
-    console.log(positionsArray[i])
+/**
+ * TWEAKING
+ */
+const gui = new dat.GUI()
+const parameters = {
+    color: 0xff0000
 }
 
-const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
-console.log(positionsAttribute)
-geometry.setAttribute('position', positionsAttribute)
+
+
+// Creating a mesh with material    
+const geometry = new THREE.BoxGeometry(1,1,1,2,2,2)      // here BoxGeometry(height, width, depth)
+
 
 const material = new THREE.MeshBasicMaterial({
-    color : 'red',
+    color : parameters.color,
     wireframe: true
 })
 const cube = new THREE.Mesh(geometry,material)
+
+//DEBUG
+gui.add(cube.position, 'x').min(-5).max(5).step(0.01)
+
+gui.add(cube ,'visible')
+gui.addColor(parameters, 'color').onChange(() => {
+    material.color.set(parameters.color)
+})
+
 
 //Positioning Cube
 cube.position.set(0,0,0)
@@ -159,3 +169,17 @@ tick()
 // ])
 
 // const vertexPosition = new THREE.BufferAttribute(positionsArray, 3)
+
+//Buffer Geometry.. 
+// const geometry = new THREE.BufferGeometry()
+
+// const count = 10
+// const positionsArray = new Float32Array(count * 3 * 3)
+// for(let i = 0; i<count*3*3; i++){
+//     positionsArray[i] = Math.random()
+//     console.log(positionsArray[i])
+// }
+
+// const positionsAttribute = new THREE.BufferAttribute(positionsArray, 3)
+// console.log(positionsAttribute)
+// geometry.setAttribute('position', positionsAttribute)
